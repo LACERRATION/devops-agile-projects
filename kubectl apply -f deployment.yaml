@@ -1,0 +1,33 @@
+# deployment.yaml
+# This Kubernetes Deployment creates a set of Nginx web servers.
+# It ensures that a specified number of replicas are running at all times,
+# and handles rolling updates if the image or configuration changes.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment # Name of the Deployment
+  labels:
+    app: nginx          # Label for the Deployment
+spec:
+  replicas: 3           # Desired number of Nginx pods
+  selector:
+    matchLabels:
+      app: nginx        # Selector to find pods managed by this Deployment
+  template:
+    metadata:
+      labels:
+        app: nginx      # Labels applied to the pods created by this Deployment
+    spec:
+      containers:
+      - name: nginx     # Name of the container
+        image: nginx:latest # The Docker image to use for the container (Nginx latest version)
+        ports:
+        - containerPort: 80 # The port that the container exposes
+        resources:
+          limits:
+            cpu: "500m"   # Limit CPU usage to 0.5 CPU core
+            memory: "256Mi" # Limit memory usage to 256 MiB
+          requests:
+            cpu: "250m"   # Request 0.25 CPU core
+            memory: "128Mi" # Request 128 MiB
